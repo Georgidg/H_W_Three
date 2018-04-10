@@ -1,58 +1,86 @@
+#include "Member.h"
 
-#include"Member.h"
-using namespace std;
-Member avi, beni, chana;
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest.h"
 
-void test1() {
-
-	Member dana;
-
-	chana.follow(dana);
-
-	dana.follow(avi);
-
-	cout << "" << chana.numFollowers() << "" << chana.numFollowing() << endl; // 0 1
-
-	cout << "  " << avi.numFollowers() << " " << avi.numFollowing() << endl; // 1 0
-
-	cout << "  " << Member::count() << endl; // 4
-
-}
-void test_keys() {//check if keys provided correctly
-	if (avi.Member_Key != 1) cout << "ERROR! Wrong Key"<<endl;
-	if (beni.Member_Key != 2) cout << "ERROR! Wrong Key" << endl;
-	if (chana.Member_Key != 3) cout << "ERROR! Wrong Key" << endl;
-	Member avi;
-	if (avi.Member_Key == 1) cout << "ERROR! Wrong Key" << endl;
-
-
+TEST_CASE("testing the getId function") {
+	Member first;
+	CHECK(first.Member_Key == 0);
+	Member second;
+	CHECK(second.Member_Key == 1);
+	Member third;
+	CHECK(third.Member_Key== 2);
 }
 
-
-
-int main() {
-	test_keys();
-	cout << avi.numFollowers() << " " << avi.numFollowing() << endl; // 0 0
-	avi.follow(beni);
-	cout << avi.numFollowers() << " " << avi.numFollowing() << endl; // 0 1
-	cout << beni.numFollowers() << " " << beni.numFollowing() << endl; // 1 0
-	cout << Member::count() << endl; // 3
-	cout << endl;
-
-	avi.follow(beni); // duplicate follow has no effect
-	avi.follow(beni); avi.follow(beni); avi.follow(beni); avi.follow(beni); avi.follow(beni);
-	cout << "avi.numFollowers()" << avi.numFollowers() << "avi.numFollowing()" << avi.numFollowing() << endl; // 0 1
-	avi.unfollow(beni);
-	cout << avi.numFollowers() << " " << avi.numFollowing() << endl; // 0 0
-	cout << endl;
-
-	cout << chana.numFollowers() << " " << chana.numFollowing() << endl; // 0 0
-	test1();
-	cout << chana.numFollowers() << " " << chana.numFollowing() << endl; // 0 0
-	cout << avi.numFollowers() << " " << avi.numFollowing() << endl; // 0 0
-	cout << Member::count() << endl; // 3
-
+TEST_CASE("testing the numFollowing function") {
+	Member first, second, third;
+	CHECK(first.numFollowing() == 0);
+	first.follow(first);
+	CHECK(first.numFollowing() == 0);
+	first.follow(second);
+	CHECK(first.numFollowing() == 1);
+	first.follow(second);
+	CHECK(first.numFollowing() == 1);
+	first.follow(third);
+	CHECK(first.numFollowing() == 2);
 }
+
+TEST_CASE("testing the numFollowers function") {
+	Member first, second, third;
+	CHECK(second.numFollowers() == 0);
+	second.follow(second);
+	CHECK(second.numFollowers() == 0);
+	first.follow(second);
+	CHECK(second.numFollowers() == 1);
+	first.follow(second);
+	CHECK(second.numFollowers() == 1);
+	third.follow(second);
+	CHECK(second.numFollowers() == 2);
+}
+
+TEST_CASE("testing the count function") {
+	CHECK(Member::count() == 0);
+	Member first;
+	CHECK(Member::count() == 1);
+	Member second;
+	CHECK(Member::count() == 2);
+	Member third;
+	CHECK(Member::count() == 3);
+}
+
+TEST_CASE("testing the follow function") {
+	Member first, second, third;
+	CHECK(second.numFollowers() == 0);
+	CHECK(second.numFollowing() == 0);
+	second.follow(second);
+	CHECK(second.numFollowers() == 0);
+	CHECK(second.numFollowing() == 0);
+	first.follow(second);
+	CHECK(second.numFollowers() == 1);
+	CHECK(first.numFollowing() == 1);
+	third.follow(second);
+	CHECK(second.numFollowers() == 2);
+	CHECK(third.numFollowing() == 1);
+}
+
+TEST_CASE("testing the unfollow function") {
+	Member first, second, third;
+	CHECK(second.numFollowers() == 0);
+	CHECK(second.numFollowing() == 0);
+	second.unfollow(second);
+	CHECK(second.numFollowers() == 0);
+	CHECK(second.numFollowing() == 0);
+	first.follow(second);
+	third.follow(second);
+	first.unfollow(second);
+	CHECK(second.numFollowers() == 1);
+	CHECK(first.numFollowing() == 0);
+	third.unfollow(second);
+	CHECK(second.numFollowers() == 0);
+	CHECK(third.numFollowing() == 0);
+}
+
+
 
 
 
