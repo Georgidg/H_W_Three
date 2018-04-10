@@ -1,39 +1,3 @@
-/*
-#ifndef UNTITLED1_MEMBER_H
-#define UNTITLED1_MEMBER_H
-
-
-using namespace std;
-
-#include <map>
-#include <iterator>
-#include <iostream>
-#include <string>
-class Member {
-
-private:
-	map<int, Member*> followers;
-	map<int, Member*> following;
-
-public:
-	int id;
-	static int countId;
-	static int class_size;
-	Member();
-	~Member();
-	static int count();
-	void follow(Member &m);
-	void unfollow(Member &m);
-	int numFollowers();
-	int numFollowing();
-
-
-
-};
-
-
-#endif //UNTITLED1_MEMBER_H*/
-/********************************************************/
 
 
 #pragma once
